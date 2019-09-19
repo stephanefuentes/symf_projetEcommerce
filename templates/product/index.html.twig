@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!{% endblock %}
+
+{% block body %}
+<h2>Liste des produits</h2>
+
+<p>
+    <a href="{{ path('product_create') }}">New Product</a>
+</p>
+
+
+<table class="table table-hover">
+<thead>
+    <th>Id</th>
+    <th>Titre</th>
+
+    <th>Description (intro )</th>
+    <th>Price</th>
+    <th>Image</th>
+    
+    <th></th>
+    <th></th>
+</thead>
+<tbody>
+{% for product in products %}
+    
+    <tr>
+        <td>{{ product.id }}</td>
+        <td>{{ product.title }}</td>
+
+
+        <td>{{ product.description }}</td>
+
+        <td>{{ product.price }} €</td>
+
+        <td><img src="{{ product.picture }}" alt=""></td>
+
+
+        <td>
+        <a href="{{ path('product_edit', {"id": product.id}) }}" class="btn btn-info">Editer</a>
+
+        </td>
+
+
+        <td>
+        <a href="{{ path('product_delete', {'id': product.id }) }}" class="btn btn-danger">Supprimer</a>
+
+        </td>
+
+        
+    </tr>
+{% endfor %}
+
+</tbody>
+
+
+
+</table>
+{% endblock %}

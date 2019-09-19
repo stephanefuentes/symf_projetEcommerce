@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <h2>Creation d'un produit</h2>
+
+    {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+
+    {{ form_widget(form) }}
+
+    <button class="btn btn-success" type="submit">Enregistrer</button>
+
+    
+
+    {{ form_end(form) }}
+
+    <br/>
+    <p>
+        <a href="{{ path('product_index') }}">Retour a la miste des produits</a>
+    </p>
+
+
+
+{% endblock %}
