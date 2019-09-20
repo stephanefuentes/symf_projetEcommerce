@@ -2,11 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
+use Faker\Factory;
+use App\Entity\Command;
 use App\Entity\Product;
+use App\Entity\Category;
+use App\Entity\CommandProduct;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
@@ -20,6 +22,8 @@ class AppFixtures extends Fixture
             "High-tech" => ["Ordinateurs", "Matériel", "Audio"],
             "Geekeries" => ["Habits", "Goodies"],
         ];
+
+        $products = [];
 
         foreach ($categoryTitles as $title => $subTitles) {
             $category = new Category;
@@ -46,9 +50,36 @@ class AppFixtures extends Fixture
                         ->setCategorie($subCategory);
 
                     $manager->persist($product);
+
+                    $products[] = $product;
                 }
             }
         }
+
+
+        for ($c = 0; $c < 10; $c++) {
+            $command = new Command();
+            $command->setAddress($faker->address)
+                ->setCreatedAt($faker->dateTimeBetween("-6 months"));
+
+            $manager->persist($command);
+
+            // Faire les liens avec les produits
+            $randomProducts = $faker->randomElements($products, 4);
+
+            foreach ($randomProducts as $product) {
+                $commandProduct = new CommandProduct();
+                $commandProduct->setProduct($product)
+                    ->setCommand($command)
+                    ->setQuantity(mt_rand(1, 3));
+
+                //$command->addCommandProduct($commandProduct);
+
+                $manager->persist($commandProduct);
+            }
+
+        }
+
 
         // $product = new Product();
         // $manager->persist($product);

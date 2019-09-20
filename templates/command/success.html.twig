@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+<div class="alert alert-success">
+
+
+<h2 class="alert-title">
+Nickel, la commande à bien été enregistré
+</h2>
+<p>
+    Elle sera livrée à :
+    {{ commande.address }}
+</p>
+
+
+
+</div>
+
+{% endblock %}
