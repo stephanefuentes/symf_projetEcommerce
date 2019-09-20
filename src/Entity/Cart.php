@@ -67,7 +67,7 @@ class Cart
      */
     public function all(): array
     {
-        return array_slice($this->items, 0);
+        return array_slice($this->items,0);
     }
 
 
@@ -84,6 +84,27 @@ class Cart
         return $this;
     }
 
-    
+
+    public function getTotal(): float
+    {
+
+
+        return array_reduce($this->items, function (float $total, CartItem $item) {
+            return $total += $item->getTotal();
+        }, 0);
+
+        
+        // OU BIEN L'ECRITURE SUIVANTE
+            $total = 0;
+
+            foreach ($this->items as $cartItem) {
+                $total += $cartItem->getTotal();
+            }
+
+            return $total;
+    }
+
+
+
 
 }

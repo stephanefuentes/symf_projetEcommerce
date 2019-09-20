@@ -40,11 +40,13 @@ class CartItem
 
 
 
+
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
         return $this;
     }
+
 
     public function getQuantity(): int
     {
@@ -57,6 +59,12 @@ class CartItem
     {
         $this->quantity++;
         return $this;
+    }
+
+
+    public function getTotal(): float
+    {
+        return $this->product->getPrice() * $this->quantity;
     }
     
 }

@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class CartService
 {
 
+    protected $shipping = 4.5;
+
     protected $session;
 
 
@@ -18,6 +20,12 @@ class CartService
         $this->session = $session;
     }
     
+
+    public function getShipping()
+    {
+        return $this->shipping;
+    }
+
 
     public function add(Product $product)
     {
@@ -78,7 +86,7 @@ class CartService
         // $session->set('cart-items', $items);
         $this->session->set('cart-items', $cart);
 
-        dd($this->session->get("cart-items"));
+       // dd($this->session->get("cart-items"));
     }
 
 
@@ -129,6 +137,29 @@ class CartService
     }
 
 
+
+    /**
+     * Récupère le total du Cart stocké en session
+     *
+     * @return float
+     */
+    public function getTotal(): float
+    {
+        $cart = $this->session->get('cart-items', new Cart());
+
+        return $cart->getTotal();
+    }
+
+
+    /**
+     * Récupère le total du panier + la livraison
+     *
+     * @return float
+     */
+    public function getGrandTotal(): float
+    {
+        return $this->shipping + $this->getTotal();
+    }
 
 
 }

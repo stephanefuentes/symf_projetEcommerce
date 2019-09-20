@@ -14,16 +14,48 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CartController extends AbstractController
 {
+
+    
+    /**
+     * @Route("/cart", name="cart_index")
+     */
+    public function index(CartService $cartService)
+    {
+        $items = $cartService->getItems();
+        $total = $cartService->getTotal();
+        $shipping = $cartService->getShipping();
+        $grandTotal = $cartService->getGrandTotal();
+
+
+        return $this->render('cart/index.html.twig', [
+            "items" => $items,
+            "total" => $total,
+            "shipping" => $shipping,
+            "grandTotal" => $grandTotal
+        ]);
+    }
+
+
+
     /**
      * @Route("/cart/add/{id}", name="cart_add")
      */
     public function add(Product $product, CartService $cartService)
     {
         $cartService->add($product);
-        dd($cartService->getItems());
+
+        $this->addFlash(
+            'success',
+            "Le produit <strong>{$product->getTitle()}</strong> a bien été ajouté au panier !"
+        );
+
+        
+
+        return $this->redirectToRoute("cart_index");
 
         
     }
+
 
     /**
      * @Route("/cart/remove/{id}", name="cart_remove")
@@ -31,7 +63,13 @@ class CartController extends AbstractController
     public function remove(Product $product, CartService $cartService)
     {
             $cartService->remove($product);
-            dd($cartService->getItems());
+
+        $this->addFlash(
+            'success',
+            "Le produit <strong>{$product->getTitle()}</strong> a bien été supprimé du panier !"
+        );
+
+            return $this->redirectToRoute("cart_index");
     }
 
 
@@ -42,7 +80,13 @@ class CartController extends AbstractController
     {
         // Le but est de vider le panier (nécessite l'accès à la session)
         $cartService->empty();
-        dd($cartService->getItems());
+
+        $this->addFlash(
+            'success',
+            "Le panier a bien été vidé!"
+        );
+
+        return $this->redirectToRoute("home");
     }
 
 }
