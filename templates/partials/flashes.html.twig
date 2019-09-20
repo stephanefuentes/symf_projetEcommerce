@@ -1,0 +1,29 @@
+{% for type, messages in app.flashes %}
+    <div class="alert alert-{{type}}">
+
+<h2 class="alert-title">
+    {% if type == "success" %}
+        Bravo !
+    {% else %}
+        Aie aie aie ...
+    {% endif %}
+</h2>
+
+
+    
+        {% for message in messages %}
+            <p>{{ message | raw }}</p>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+
+
+{# {% switch type %}
+    {% case "success" %}
+        <h2 class="alert-title">Bravo !</h2>
+    {% case "danger" %}
+        <h2 class="alert-title">Aie aie aie ...</h2>
+    {% default %}
+        <h2 class="alert-title">Message d'information</h2>
+{% endswitch %} #}
