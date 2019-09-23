@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+<div class="alert alert-light">
+    <h1 calss="alert-title">{{ product.title }}</h1>
+
+</div>
+
+<div class="row">
+
+    <div class="col-4">
+        <img src="{{ product.picture }}" alt="" class="img-fluid">
+        <p><strong class="badge badge-info">{{ product.price | price }}</strong></p>
+    </div>
+
+    <div class="col-8">
+        {{ product.introduction | markdown }}
+        <hr/>
+        {{ product.description | markdown }}
+    </div>
+
+    <a href="{{ path('cart_add', {'id': product.id} )}}" class="btn btn-success text-white">
+        <i class="fas fa-shopping-cart mr-1"></i>
+        Ajouter au panier
+    </a>
+
+
+</div>
+
+
+
+{% endblock %}

@@ -51,8 +51,38 @@ class CommandController extends AbstractController
     /**
      * @Route("/payment", name="command_payment")
      */
-    public function payment(CartService $cartService, SessionInterface $session)
+    public function payment(CartService $cartService, SessionInterface $session, Request $request)
     {
+
+        if($request->request->get('stripeToken'))
+        {
+            // création du paiement
+            // code récupérer sur le site Stripe
+            // Set your secret key: remember to change this to your live secret key in production
+            // See your keys here: https://dashboard.stripe.com/account/apikeys
+            \Stripe\Stripe::setApiKey('sk_test_R7lEkr1O6MHswomq4mebOXOR004FrEZQkj');
+
+            // Token is created using Checkout or Elements!
+            // Get the payment token ID submitted by the form:
+            //$token = $_POST['stripeToken'];
+            $token = $request->request->get('stripeToken');
+
+            $charge = \Stripe\Charge::create([
+                'amount' => $cartService->getGrandTotal()*100,
+                'currency' => 'eur',
+                'description' => 'Example charge',
+                'source' => $token,
+            ]);
+
+            if($charge->status === "succeeded")
+            {
+                return $this->redirectToRoute("command_process");
+            }
+
+        }
+
+       
+
         return $this->render('command/payment.html.twig', [
             'total' => $cartService->getGrandTotal(),
             'address' => $session->get('command-address')

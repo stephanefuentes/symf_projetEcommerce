@@ -22,7 +22,7 @@
                         <p style="margin-top:30px;font-weight:bold;">Prix : {{ product.price }} € </p>
 
                         <hr>
-                        <a href="#" class="btn btn-primary text-white">
+                        <a href="{{ path('product_show', {'id': product.id }) }}" class="btn btn-primary text-white">
                             <i class="fas fa-search mr-1"></i>
                             Détails
                         </a>
