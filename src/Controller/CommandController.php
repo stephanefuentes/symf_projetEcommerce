@@ -12,16 +12,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
+/**
+ * @IsGranted("ROLE_USER")
+ */
 class CommandController extends AbstractController
 {
 
     /**
      * @Route("/command", name="command_index")
+     * 
      */
     public function index(Request $request, SessionInterface $session)
     {
+
+        // équivalent à l'annotation IsGranted au dessus de la function
+        //$this->denyAccessUnlessGranted(('ROLE_USER'));
 
         $form = $this->createForm(AddressType::class);
 
@@ -94,13 +103,15 @@ class CommandController extends AbstractController
     /**
      * @Route("/process", name="command_process")
      */
-    public function process(SessionInterface $session, CartService $cartService, ObjectManager $manager, ProductRepository $repo)
+    public function process(SessionInterface $session, CartService $cartService, ObjectManager $manager, ProductRepository $repo, Security $security)
     {
 
         // 1. Je créé une commande avec sa date et son adresse
         $commande = new Command();
         $commande->setCreatedAt(new DateTime())
-            ->setAddress($session->get('command-address'));
+            ->setAddress($session->get('command-address'))
+            //$this->getUser() est un raccourci de la ligne ci dessous
+            ->setUser($security->getUser());
 
         $manager->persist($commande);
 

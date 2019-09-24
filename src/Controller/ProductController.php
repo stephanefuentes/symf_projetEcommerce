@@ -149,4 +149,26 @@ class ProductController extends AbstractController
     }
 
 
+
+    /**
+     * @Route("/search", name="product_search")
+     */
+    public function search(Request $request, ProductRepository $repo)
+    {
+
+        $search = $request->query->get('search', null);
+
+        if($search)
+        {
+            $result = $repo->findBySearch($search);
+            //dd($result);
+        }
+
+        return $this->render("search/search.html.twig", [
+            "result" => $result,
+            "search" => $search
+        ]);
+       
+    }
+
 }

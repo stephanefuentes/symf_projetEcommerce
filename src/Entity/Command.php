@@ -33,6 +33,11 @@ class Command
      */
     private $commandProducts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commands")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->commandProducts = new ArrayCollection();
@@ -94,6 +99,18 @@ class Command
                 $commandProduct->setCommand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

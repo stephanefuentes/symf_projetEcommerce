@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="alert alert-light">
+
+    <h1 class="alert-light">
+        <i class="fas fa-user"></i>
+        Créer un compte
+    </h1>
+</div>
+
+{{ form_start(form) }}
+
+{{ form_widget(form) }}
+
+
+<button type="submit" class="btn btn-success">
+Je m'inscris</button>
+
+{{ form_end(form) }}
+
+
+
+{% endblock %}
